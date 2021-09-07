@@ -21,7 +21,7 @@ jobs:
       - uses: actions/checkout@master
 
       - name: Upload file to bucket
-        uses: koraykoska/s3-upload-github-action@master
+        uses: DemaTrading-ai/s3-upload-github-action@master
         env:
           FILE: ./file_or_dir_to_upload/
           S3_PREFIX: target_directory
