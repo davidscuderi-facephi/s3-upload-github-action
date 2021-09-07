@@ -1,6 +1,6 @@
-name: "S3 Upload"
+name: "S3 Upload - V4 Signature"
 description: "Upload files and directories to S3 compatible cloud buckets"
-author: "Koray Koska <koray@koska.at>"
+author: "DemaTrading.ai <contact@dematrading.ai>"
 runs:
   using: docker
   image: Dockerfile
