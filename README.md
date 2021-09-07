@@ -23,9 +23,11 @@ jobs:
       - name: Upload file to bucket
         uses: koraykoska/s3-upload-github-action@master
         env:
-          FILE: ./releases/
-          S3_ENDPOINT: 'ams3.digitaloceanspaces.com'
-          S3_BUCKET: ${{ secrets.S3_BUCKET }}
-          S3_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
-          S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
+          FILE: ./file_or_dir_to_upload/
+          S3_PREFIX: target_directory
+          S3_ENDPOINT: 'https://s3.nl-ams.scw.cloud'
+          S3_BUCKET: bucket_name
+          S3_ACL: private
+          S3_ACCESS_KEY_ID: ${{ secrets.AWS_KEY_ID }}
+          S3_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 ```
