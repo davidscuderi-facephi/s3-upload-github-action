@@ -10,11 +10,11 @@ const s3 = new aws.S3({
   secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
 });
 
-const uploadFile = (fileName) => {
+const uploadFile = async (fileName) => {
   if (fs.lstatSync(fileName).isDirectory()) {
-    fs.readdirSync(fileName).forEach((file) => {
-      uploadFile(`${fileName}/${file}`);
-    });
+    await Promise.all(fs.readdirSync(fileName).map(async (file) => {
+      await uploadFile(`${fileName}/${file}`);
+    }));
   } else {
     const fileContent = fs.readFileSync(fileName);
 
@@ -39,4 +39,6 @@ const uploadFile = (fileName) => {
   }
 };
 
-uploadFile(process.env.FILE);
+uploadFile(process.env.FILE).then(() => {
+  process.exit()
+});
