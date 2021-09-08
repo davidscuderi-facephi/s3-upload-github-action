@@ -26,7 +26,7 @@ jobs:
           FILE: ./file_or_dir_to_upload/
           S3_PREFIX: target_directory
           S3_ENDPOINT: 'https://s3.nl-ams.scw.cloud'
-          S3_BUCKET: bucket_name
+          S3_BUCKET: bucket_id
           S3_ACL: private
           S3_ACCESS_KEY_ID: ${{ secrets.AWS_KEY_ID }}
           S3_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
