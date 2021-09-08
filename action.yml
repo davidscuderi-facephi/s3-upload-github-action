@@ -1,4 +1,4 @@
-name: "S3 Upload - V4 Signature"
+name: "S3 Upload - Async action"
 description: "Upload files and directories to S3 compatible cloud buckets"
 author: "DemaTrading.ai <contact@dematrading.ai>"
 runs:
