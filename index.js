@@ -37,10 +37,16 @@ async function startAction(inputValue) {
   const lstatRes = await fs.promises.lstat(inputValue)
   if (lstatRes.isDirectory()) {
     const filesInDirectory = await fs.promises.readdir(inputValue)
-    const promises = filesInDirectory.map(async (file) => await uploadSingleFile(`${inputValue}/${file}`))
+    const promises = filesInDirectory.map(async (file) => {
+      console.log('dir = ', inputValue)
+      console.log('file = ', file)
+      await startAction(`${inputValue}/${file}`)
+    })
     await Promise.all(promises).then((res) => {
       res.forEach((unit) => console.log(`uploaded to ${unit.key}`))
     });
+  } else {
+    await uploadSingleFile(inputValue);
   }
 }
 
