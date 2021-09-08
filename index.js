@@ -38,21 +38,19 @@ async function startAction(inputValue) {
   if (lstatRes.isDirectory()) {
     const filesInDirectory = await fs.promises.readdir(inputValue)
     const promises = filesInDirectory.map(async (file) => {
-      console.log('dir = ', inputValue)
-      console.log('file = ', file)
-      await startAction(`${inputValue}/${file}`)
+      return await startAction(`${inputValue}/${file}`)
     })
     await Promise.all(promises).then((res) => {
-      res.forEach((unit) => console.log(`uploaded to ${unit.key}`))
+      res.forEach((unit) => { if(unit.key) console.log(`uploaded to ${unit.key}`) })
     });
   } else {
-    await uploadSingleFile(inputValue);
+    return await uploadSingleFile(inputValue);
   }
 }
 
 console.log('Starting upload action to S3. - Version 1.')
 startAction(process.env.FILE).then(() => {
-  console.log('done')
+  console.log('Action is done.')
   process.exit()
 }).catch(err => {
   console.log(err);
