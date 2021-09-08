@@ -44,6 +44,7 @@ async function startAction(inputValue) {
   }
 }
 
+console.log('Starting upload action to S3. - Version 1.')
 startAction(process.env.FILE).then(() => {
   console.log('done')
   process.exit()
