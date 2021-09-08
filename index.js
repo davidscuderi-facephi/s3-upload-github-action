@@ -41,7 +41,7 @@ async function startAction(inputValue) {
       return await startAction(`${inputValue}/${file}`)
     })
     await Promise.all(promises).then((res) => {
-      res.forEach((unit) => { if(unit.key) console.log(`uploaded to ${unit.key}`) })
+      res.forEach((unit) => { if(unit && unit.key) console.log(`uploaded to ${unit.key}`) })
     });
   } else {
     return await uploadSingleFile(inputValue);
