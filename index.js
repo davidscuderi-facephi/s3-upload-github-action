@@ -49,5 +49,5 @@ startAction(process.env.FILE).then(() => {
   console.log('done')
   process.exit()
 }).catch(err => {
-  console.log(error);
+  console.log(err);
 });
