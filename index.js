@@ -47,4 +47,6 @@ async function startAction(inputValue) {
 startAction(process.env.FILE).then(() => {
   console.log('done')
   process.exit()
+}).catch(err => {
+  console.log(error);
 });
