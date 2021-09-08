@@ -10,33 +10,41 @@ const s3 = new aws.S3({
   secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
 });
 
-const uploadFile = (fileName) => {
-  if (fs.lstatSync(fileName).isDirectory()) {
-    fs.readdirSync(fileName).forEach((file) => {
-      uploadFile(`${fileName}/${file}`);
-    });
-  } else {
-    const fileContent = fs.readFileSync(fileName);
+async function uploadSingleFile(filePath) {
+  const fileContent = await fs.promises.readFile(filePath);
+  // Setting up S3 upload parameters
+  const params = {
+    Bucket: process.env.S3_BUCKET,
+    Key: `${process.env.S3_PREFIX || ""}/${path.normalize(filePath)}`,
+    Body: fileContent,
+  };
+  const acl = process.env.S3_ACL;
+  if (acl) {
+    params.ACL = acl;
+  }
 
-    // Setting up S3 upload parameters
-    const params = {
-      Bucket: process.env.S3_BUCKET,
-      Key: `${process.env.S3_PREFIX || ""}/${path.normalize(fileName)}`,
-      Body: fileContent,
-    };
-    const acl = process.env.S3_ACL;
-    if (acl) {
-      params.ACL = acl;
+  // Uploading files to the bucket
+  return await s3.upload(params, function (err, data) {
+    console.log('uploaded file.')
+    if (err) {
+      throw err;
     }
+    return data
+  }).promise()
+}
 
-    // Uploading files to the bucket
-    s3.upload(params, function (err, data) {
-      if (err) {
-        throw err;
-      }
-      console.log(`File uploaded successful. ${data.Location}`);
+async function startAction(inputValue) {
+  const lstatRes = await fs.promises.lstat(inputValue)
+  if (lstatRes.isDirectory()) {
+    const filesInDirectory = await fs.promises.readdir(inputValue)
+    const promises = filesInDirectory.map(async (file) => await uploadSingleFile(`${inputValue}/${file}`))
+    await Promise.all(promises).then((res) => {
+      res.forEach((unit) => console.log(`uploaded to ${unit.key}`))
     });
   }
-};
+}
 
-uploadFile(process.env.FILE)
+startAction(process.env.FILE).then(() => {
+  console.log('done')
+  process.exit()
+});
