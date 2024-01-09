@@ -6,6 +6,7 @@ const spacesEndpoint = new aws.Endpoint(process.env.S3_ENDPOINT);
 const s3 = new aws.S3({
   signatureVersion: "v4",
   endpoint: spacesEndpoint,
+  s3ForcePathStyle: spacesEndpoint ? "true" : "false",
   accessKeyId: process.env.S3_ACCESS_KEY_ID,
   secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
 });
